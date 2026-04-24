@@ -1,6 +1,7 @@
 name: Build registry.json
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths:
