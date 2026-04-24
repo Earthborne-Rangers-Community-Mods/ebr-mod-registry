@@ -11,8 +11,7 @@ ebr-mod-registry/
     ultimate-valley-experience.json
   scripts/
     build-registry.js          # Builds registry.json from mods/*.json
-  schema-version.json          # Registry schema version (shared across scripts)
-  registry.json                # Built by CI  - do not edit by hand
+  registry.json                # Built by CI - do not edit by hand
   .github/
     workflows/
       build-registry.yml       # Runs build-registry.js on merge to main
@@ -22,14 +21,14 @@ Each mod gets its own file in `mods/`. A GitHub Action builds the combined `regi
 
 ## How it works
 
-1. **Publish**  - mod creators run `ebr publish` from [`ebr-mod-tools`](https://github.com/la-thorn/ebr-mod-tools), which forks this repo, creates/updates `mods/<mod-id>.json`, and opens a PR.
-2. **Review**  - a maintainer reviews and merges the PR. Branch protection requires approval before any mod appears in the app.
-3. **Build**  - on merge, a GitHub Action reads all `mods/*.json` files, extracts browsing fields, and commits the combined `registry.json`.
-4. **Fetch**  - the mod manager app fetches `registry.json` on startup (browse view) and individual `mods/<id>.json` files via `raw.githubusercontent.com` when users tap a mod (detail view).
+1. **Publish** - mod creators run `ebr publish` from the mod tools, which forks this repo, creates/updates `mods/<mod-id>.json`, and opens a PR.
+2. **Review** - a maintainer reviews and merges the PR.
+3. **Build** - on merge, a GitHub Action reads all `mods/*.json` files, extracts browsing fields, and commits the combined `registry.json`.
+4. **Fetch** - the mod manager app fetches `registry.json` on startup (browse view) and individual `mods/<id>.json` files via `raw.githubusercontent.com` when users select a mod (detail view).
 
 ### Commit pinning
 
-Each per-mod file records a `commitHash`  - the exact git commit the mod was published from. The app downloads that specific commit, not `main`.
+Each per-mod file records a `commitHash` - the exact git commit the mod was published from. The app downloads that specific commit, not `main`.
 
 ## Mod types
 
@@ -40,12 +39,12 @@ Each per-mod file records a `commitHash`  - the exact git commit the mod was pub
 | `one-day-mission` | Single-session mission designed for one sitting |
 | `expansion` | New areas, story arcs, or mission chains |
 | `collection` | Pre-merged combination of multiple mods |
-| `theme` | CSS-only visual reskin |
+| `theme` | Visual reskins |
 
 ## Moderation
 
 - Every submission requires maintainer approval before it appears in the app.
-- Maintainers can remove a mod by deleting its file from `mods/`  - CI rebuilds `registry.json` without it.
+- Maintainers can remove a mod by deleting its file from `mods/`. CI rebuilds `registry.json` without it.
 - See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) for community standards.
 
 ## Do not edit `registry.json` by hand
