@@ -1,4 +1,25 @@
 {
   "schemaVersion": 1,
-  "mods": []
+  "mods": [
+    {
+      "id": "revisit-locations",
+      "name": "Revisit Locations",
+      "author": "Thane of Roses",
+      "description": "Shorten the description you read for locations the second time you visit them.",
+      "repoUrl": "https://github.com/la-thorn/ebr-mod-base-content",
+      "type": "enhancement",
+      "campaigns": [
+        "lure-of-the-valley"
+      ],
+      "requiredProducts": [
+        "core-set"
+      ],
+      "safeToAddMidCampaign": true,
+      "icon": "🏔️",
+      "language": "en",
+      "latestVersion": "1.0.2",
+      "updatedAt": "2026-04-24",
+      "commitHash": "76906855481226d4948393d9928733372ce1d906"
+    }
+  ]
 }
