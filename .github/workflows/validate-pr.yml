@@ -1,0 +1,29 @@
+name: Validate PR
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate mod JSON files
+        run: |
+          exit_code=0
+          for file in mods/*.json; do
+            [ -f "$file" ] || continue
+            if ! node -e "JSON.parse(require('fs').readFileSync('$file', 'utf-8'))"; then
+              echo "::error file=$file::Invalid JSON"
+              exit_code=1
+            fi
+          done
+          exit $exit_code
+
+      - name: Build registry.json (dry run)
+        run: node scripts/build-registry.js
+
+      - name: Verify registry.json is valid JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('registry.json', 'utf-8'))"
