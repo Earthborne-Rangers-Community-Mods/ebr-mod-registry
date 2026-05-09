@@ -1,0 +1,34 @@
+{
+  "id": "all-official-content",
+  "name": "All Official Content",
+  "author": "Thane of Roses",
+  "description": "All the official Living Valley entries.",
+  "repoUrl": "https://github.com/la-thorn/ebr-mod-base-content",
+  "type": "collection",
+  "campaigns": [
+    "lure-of-the-valley",
+    "legacy-of-the-ancestors",
+    "spire-in-bloom",
+    "shadow-of-the-storm",
+    "animal-rescue",
+    "missing-person",
+    "predatory-instincts",
+    "incandescent-sky"
+  ],
+  "requiredProducts": [
+    "core-set"
+  ],
+  "safeToAddMidCampaign": true,
+  "language": "en",
+  "authorDiscord": "thaneofroses",
+  "icon": "🔷",
+  "optionalProducts": [
+    "legacy-of-the-ancestors",
+    "spire-in-bloom",
+    "shadow-of-the-storm",
+    "incandescent-sky"
+  ],
+  "latestVersion": "1.0.3",
+  "updatedAt": "2026-05-09",
+  "commitHash": "53d6b8cf61c3c7692a54e1cb150c805c95f6e026"
+}
