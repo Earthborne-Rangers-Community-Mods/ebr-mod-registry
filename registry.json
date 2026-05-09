@@ -1,4 +1,25 @@
 {
   "schemaVersion": 1,
-  "mods": []
+  "mods": [
+    {
+      "id": "familiar-ground",
+      "name": "Familiar Ground",
+      "author": "Thane of Roses",
+      "description": "Shorten the description for locations on repeat visits, so you can set the scene and get back to the game faster.",
+      "repoUrl": "https://github.com/la-thorn/ebr-mod-base-content",
+      "type": "enhancement",
+      "campaigns": [
+        "lure-of-the-valley"
+      ],
+      "requiredProducts": [
+        "core-set"
+      ],
+      "safeToAddMidCampaign": true,
+      "icon": "🏔️",
+      "language": "en",
+      "latestVersion": "1.0.0",
+      "updatedAt": "2026-05-09",
+      "commitHash": "edbb75d9960b441936e7104e8708da0b2b75788c"
+    }
+  ]
 }
