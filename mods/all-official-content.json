@@ -1,0 +1,32 @@
+{
+  "id": "all-official-content",
+  "name": "All Official Content",
+  "author": "Sunberry Keeper",
+  "description": "All official campaign entries from the Living Valley.",
+  "repoUrl": "https://github.com/SunberryKeeper/ebr-mod-base-content",
+  "type": "collection",
+  "campaigns": [
+    "lure-of-the-valley",
+    "legacy-of-the-ancestors",
+    "spire-in-bloom",
+    "shadow-of-the-storm",
+    "animal-rescue",
+    "missing-person",
+    "predatory-instincts"
+  ],
+  "requiredProducts": [
+    "core-set"
+  ],
+  "safeToAddMidCampaign": true,
+  "language": "en",
+  "authorDiscord": "thaneofroses",
+  "icon": "🔷",
+  "optionalProducts": [
+    "legacy-of-the-ancestors",
+    "spire-in-bloom",
+    "shadow-of-the-storm"
+  ],
+  "latestVersion": "1.0.1",
+  "updatedAt": "2026-05-18",
+  "commitHash": "62c25940e2471dfc0a27782dd39b29de81dd8330"
+}
