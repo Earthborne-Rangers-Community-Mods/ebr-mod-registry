@@ -4,6 +4,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -11,22 +14,29 @@ jobs:
       FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
           node-version: 24
 
-      - name: Validate mod JSON files
+      - name: Determine changed mod files
+        id: changed
         run: |
-          exit_code=0
-          for file in mods/*.json; do
-            [ -f "$file" ] || continue
-            if ! node -e "JSON.parse(require('fs').readFileSync('$file', 'utf-8'))"; then
-              echo "::error file=$file::Invalid JSON"
-              exit_code=1
-            fi
-          done
-          exit $exit_code
+          base="${{ github.event.pull_request.base.sha }}"
+          head="${{ github.event.pull_request.head.sha }}"
+          # Three-dot diff: changes since the merge-base, i.e. files the PR
+          # itself touched, not files changed on base after it diverged.
+          files=$(git diff --name-only --diff-filter=ACMR "$base...$head" -- 'mods/*.json' | tr '\n' ' ')
+          echo "Changed mod files: $files"
+          echo "files=$files" >> "$GITHUB_OUTPUT"
+
+      - name: Validate mod files
+        env:
+          CHANGED_FILES: ${{ steps.changed.outputs.files }}
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/validate-mods.js
 
       - name: Build registry.json (dry run)
         run: node scripts/build-registry.js
