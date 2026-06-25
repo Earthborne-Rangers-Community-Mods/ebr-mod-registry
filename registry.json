@@ -23,9 +23,9 @@
       "safeToAddMidCampaign": true,
       "icon": "🔷",
       "language": "en",
-      "latestVersion": "1.0.1",
-      "updatedAt": "2026-05-18",
-      "commitHash": "62c25940e2471dfc0a27782dd39b29de81dd8330"
+      "latestVersion": "1.0.3",
+      "updatedAt": "2026-06-25",
+      "commitHash": "da36334ea22687fbb6c8b7d70faea21df4cfac62"
     },
     {
       "id": "familiar-ground",
