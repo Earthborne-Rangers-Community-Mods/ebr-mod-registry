@@ -1,0 +1,23 @@
+{
+	"name": "ebr-mod-pr",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-05-23",
+	"workers_dev": true,
+	"preview_urls": false,
+	"vars": {
+		"ALLOWED_ORIGIN": "*",
+		"REGISTRY_OWNER": "Earthborne-Rangers-Community-Mods",
+		"REGISTRY_REPO": "ebr-mod-registry"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "RATE_LIMIT",
+			"id": "e529753fbe0a4a69979f5f7af162c922",
+			"remote": true
+		}
+	]
+	// APP_ID and INSTALLATION_ID can be set as vars or secrets.
+	// PRIVATE_KEY is the GitHub App private key (PKCS1 or PKCS8) - store it as
+	// an encrypted secret. Optionally bind a RATE_LIMIT KV namespace.
+	// Deploy: wrangler secret put PRIVATE_KEY  (then wrangler deploy)
+}
