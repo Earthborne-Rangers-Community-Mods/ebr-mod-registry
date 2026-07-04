@@ -1,6 +1,6 @@
 # Cloudflare Worker Maintenance - `ebr-mod-pr`
 
-This worker creates registry PRs on the user's behalf via a GitHub App, so `ebr publish` does not have to open a browser. Deployed at `https://ebr-mod-pr.ebr-mods.workers.dev`.
+This worker creates registry PRs on the user's behalf via the **EBR Mods PR Bot** GitHub App, so `ebr publish` does not have to open a browser. Deployed at `https://ebr-mod-pr.ebr-mods.workers.dev`.
 
 The CLI calls `POST /create-pr` after pushing the mod entry to the user's registry fork. The request carries the user's GitHub token; the worker verifies the token's login matches `forkOwner` before opening the PR, so a caller cannot open PRs from someone else's fork. If the worker is unreachable, `ebr publish` falls back to the browser compare-URL flow, so publishing still works without this worker.
 
@@ -10,7 +10,7 @@ The CLI calls `POST /create-pr` after pushing the mod entry to the user's regist
 
 | Name | Type | Purpose |
 |------|------|---------|
-| `APP_ID` | var or secret | GitHub App ID (EBR Mod Tools Bot, `3494042`). |
+| `APP_ID` | var or secret | GitHub App ID (EBR Mods PR Bot, `3494042`). |
 | `INSTALLATION_ID` | var or secret | App installation ID (`126835599`). |
 | `PRIVATE_KEY` | secret | GitHub App private key (PKCS8 PEM). |
 | `REGISTRY_OWNER` | var | Upstream registry owner. |
