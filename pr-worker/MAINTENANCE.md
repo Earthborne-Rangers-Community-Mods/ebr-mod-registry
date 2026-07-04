@@ -10,7 +10,7 @@ The CLI calls `POST /create-pr` after pushing the mod entry to the user's regist
 
 | Name | Type | Purpose |
 |------|------|---------|
-| `APP_ID` | var or secret | GitHub App ID (EBR Mod Registry Bot, `3494042`). |
+| `APP_ID` | var or secret | GitHub App ID (EBR Mod Tools Bot, `3494042`). |
 | `INSTALLATION_ID` | var or secret | App installation ID (`126835599`). |
 | `PRIVATE_KEY` | secret | GitHub App private key (PKCS8 PEM). |
 | `REGISTRY_OWNER` | var | Upstream registry owner. |
