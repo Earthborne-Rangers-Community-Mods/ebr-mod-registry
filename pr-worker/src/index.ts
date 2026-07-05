@@ -62,18 +62,6 @@ export default {
 			return cors(JSON.stringify({ error: 'Missing title' }), 400, env.ALLOWED_ORIGIN);
 		}
 
-		// Caller authentication: the request must carry the user's GitHub token,
-		// and its login must equal forkOwner. Without this an anonymous caller who
-		// guessed another user's publish/* branch could open a PR in their name.
-		const callerToken = bearerToken(request);
-		const caller = callerToken ? await loginForToken(callerToken) : null;
-		if (!callerToken || !caller) {
-			return cors(JSON.stringify({ error: 'Missing or invalid GitHub token' }), 401, env.ALLOWED_ORIGIN);
-		}
-		if (caller.toLowerCase() !== forkOwner.toLowerCase()) {
-			return cors(JSON.stringify({ error: 'Token owner does not match forkOwner' }), 403, env.ALLOWED_ORIGIN);
-		}
-
 		// Rate-limit per fork owner if a KV namespace is bound.
 		if (env.RATE_LIMIT) {
 			const limited = await isRateLimited(env.RATE_LIMIT, forkOwner);
@@ -89,10 +77,10 @@ export default {
 			return cors(JSON.stringify({ error: `Auth failed: ${(err as Error).message}` }), 502, env.ALLOWED_ORIGIN);
 		}
 
-		// Verify the fork branch exists before opening a PR. This confirms the
-		// branch lives in the named fork, so the head ref cannot be spoofed onto
-		// another account's fork.
-		const branchOk = await branchExists(callerToken, forkOwner, env.REGISTRY_REPO, branch);
+		// Verify the named fork branch exists before opening a PR. The branch is a
+		// public, readable head; confirming it exists in the named fork is what
+		// binds the request to real, already-published content.
+		const branchOk = await branchExists(installToken, forkOwner, env.REGISTRY_REPO, branch);
 		if (!branchOk) {
 			return cors(JSON.stringify({ error: 'Fork branch not found' }), 404, env.ALLOWED_ORIGIN);
 		}
@@ -130,32 +118,6 @@ function ghHeaders(token: string): HeadersInit {
 		'X-GitHub-Api-Version': '2022-11-28',
 		'Content-Type': 'application/json',
 	};
-}
-
-// Resolve the GitHub login of the caller's token, or null if absent/invalid.
-function bearerToken(request: Request): string | null {
-	const auth = request.headers.get('Authorization');
-	const token = auth?.replace(/^(token|Bearer)\s+/i, '').trim();
-	return token || null;
-}
-
-async function loginForToken(token: string): Promise<string | null> {
-	let res: Response;
-	try {
-		res = await fetch('https://api.github.com/user', {
-			headers: {
-				Accept: 'application/vnd.github+json',
-				Authorization: `Bearer ${token}`,
-				'User-Agent': 'ebr-mod-pr/1.0',
-				'X-GitHub-Api-Version': '2022-11-28',
-			},
-		});
-	} catch {
-		return null;
-	}
-	if (res.status !== 200) return null;
-	const data = (await res.json()) as { login?: string };
-	return data.login ?? null;
 }
 
 async function branchExists(token: string, owner: string, repo: string, branch: string): Promise<boolean> {
@@ -209,7 +171,7 @@ function cors(body: string | null, status: number, allowedOrigin: string): Respo
 			'Content-Type': 'application/json',
 			'Access-Control-Allow-Origin': allowedOrigin,
 			'Access-Control-Allow-Methods': 'POST, OPTIONS',
-			'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+			'Access-Control-Allow-Headers': 'Content-Type',
 		},
 	});
 }

@@ -2,7 +2,7 @@
 
 This worker creates registry PRs on the user's behalf via the **EBR Mods PR Bot** GitHub App, so `ebr publish` does not have to open a browser. Deployed at `https://ebr-mod-pr.ebr-mods.workers.dev`.
 
-The CLI calls `POST /create-pr` after pushing the mod entry to the user's registry fork. The request carries the user's GitHub token; the worker verifies the token's login matches `forkOwner` before opening the PR, so a caller cannot open PRs from someone else's fork. If the worker is unreachable, `ebr publish` falls back to the browser compare-URL flow, so publishing still works without this worker.
+The CLI calls `POST /create-pr` after pushing the mod entry to the user's registry fork. The request is tokenless: it carries only `forkOwner`, `branch`, `title`, and `body`. The worker verifies (with its own installation token) that `branch` exists in `forkOwner`'s registry fork - a public, readable head - then opens the cross-fork PR. We have no caller identity to check: anyone can ask the worker to open a PR from any public fork. If the worker is unreachable, `ebr publish` falls back to the browser compare-URL flow, so publishing still works without this worker.
 
 ---
 
@@ -86,7 +86,7 @@ PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
 ## Smoke test
 
 ```
-curl -X POST https://ebr-mod-pr.ebr-mods.workers.dev/create-pr -H "Content-Type: application/json" -H "Authorization: Bearer <your-pat>" -d "{\"forkOwner\":\"SunberryKeeper\",\"branch\":\"publish/test-mod\",\"title\":\"New mod: Test\"}"
+curl -X POST https://ebr-mod-pr.ebr-mods.workers.dev/create-pr -H "Content-Type: application/json" -d "{\"forkOwner\":\"SunberryKeeper\",\"branch\":\"publish/test-mod\",\"title\":\"New mod: Test\"}"
 ```
 
-201 with `{number,url}` on success; 401 without a token; 403 if the token owner does not match forkOwner; 404 if the fork branch is missing; 409 if a PR already exists. PRs always target `main`.
+201 with `{number,url}` on success; 400 on a missing/invalid `forkOwner`, `branch`, or `title`; 404 if the fork branch is missing; 409 if a PR already exists; 429 if rate-limited. PRs always target `main`.
