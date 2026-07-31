@@ -211,10 +211,8 @@ function validateEntry(entry, expectedId) {
 
   // Collections are validated for includedMods *shape* below when the field is
   // present, but includedMods is not required at the registry tier: a valid
-  // collection may be built only from official campaigns (tracked in the
-  // manifest's includedCampaigns, which is not mirrored into registry entries).
-  // The publish-time manifest validator enforces the includedMods-OR-
-  // includedCampaigns rule.
+  // collection may be built only from official campaigns. The publish-time
+  // manifest validator enforces the includedMods-OR-campaigns rule.
 
   // includedMods entries (when present) must be complete. Per-entry fields are
   // checked for presence/non-empty only - not URL shape - to match the
